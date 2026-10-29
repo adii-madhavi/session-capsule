@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "session-capsule/v1/manifest",
+  "title": "Session Capsule manifest (format 1.x)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["format", "formatVersion", "capsuleId", "createdAt", "createdBy", "mode", "tool", "source", "project", "conversation", "restoration", "integrity"],
+  "properties": {
+    "format": { "const": "session-capsule" },
+    "formatVersion": { "type": "string", "pattern": "^1\\.[0-9]+$" },
+    "capsuleId": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+    "createdAt": { "type": "string", "maxLength": 40 },
+    "createdBy": { "type": "string", "maxLength": 100 },
+    "mode": { "enum": ["full", "context-only"] },
+    "tool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "surface", "version"],
+      "properties": {
+        "id": { "enum": ["claude-code", "codex", "manual"] },
+        "surface": { "enum": ["desktop", "cli", "ide", "unknown"] },
+        "version": { "type": ["string", "null"], "maxLength": 100 }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "arch"],
+      "properties": {
+        "platform": { "type": "string", "maxLength": 40 },
+        "arch": { "type": "string", "maxLength": 40 }
+      }
+    },
+    "project": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "git", "fingerprint", "fileCount", "totalBytes"],
+      "properties": {
+        "name": { "type": "string", "maxLength": 255 },
+        "git": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["head", "branch", "remote", "dirty"],
+          "properties": {
+            "head": { "type": ["string", "null"], "pattern": "^[0-9a-f]{40,64}$" },
+            "branch": { "type": ["string", "null"], "maxLength": 255 },
+            "remote": { "type": ["string", "null"], "maxLength": 2048 },
+            "dirty": { "type": "boolean" }
+          }
+        },
+        "fingerprint": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "fileCount": { "type": "integer", "minimum": 0 },
+        "totalBytes": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "conversation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completeness", "sessionId", "title", "messageCount", "redactions"],
+      "properties": {
+        "completeness": { "enum": ["as-recorded", "possibly-partial", "user-supplied", "unavailable"] },
+        "sessionId": { "type": ["string", "null"], "maxLength": 200 },
+        "title": { "type": ["string", "null"], "maxLength": 500 },
+        "messageCount": { "type": "integer", "minimum": 0 },
+        "redactions": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "restoration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["native", "note"],
+      "properties": {
+        "native": { "enum": ["unsupported"] },
+        "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+    "integrity": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "size"],
+        "properties": {
+          "path": { "enum": ["continuation.md", "conversation.json", "conversation.md", "environment.json", "files.json", "handoff.json"] },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "session-capsule",
+  "version": "0.1.0",
+  "description": "Move an unfinished coding-agent task between computers: conversation history, a continuation note and project files in one capsule.",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "bin": {
+    "capsule": "app/cli/main.ts"
+  },
+  "scripts": {
+    "capsule": "node app/cli/main.ts",
+    "test": "node --test --test-concurrency=4 \"tests/**/*.test.ts\"",
+    "test:unit": "node --test \"tests/unit/*.test.ts\"",
+    "test:integration": "node --test \"tests/integration/*.test.ts\"",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.10.1",
+    "typescript": "5.9.3"
+  }
+}

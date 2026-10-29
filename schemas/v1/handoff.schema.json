@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "session-capsule/v1/handoff",
+  "title": "Portable handoff object (kind session-capsule.handoff, version 1.x)",
+  "description": "The contract between a recorder (Blocker / desktop-continuity, or Session Capsule's own adapters) and Session Capsule. Recorder-specific sections (checkpoint, events) keep their producer's shape. Everything here is history: nothing describes the live state of the source computer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["kind", "version", "handoffId", "createdBy", "capturedAt", "source", "session", "events", "checkpoint", "sourceStatusAtCapture", "coverage", "notes", "capsule"],
+  "definitions": {
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "stringList": { "type": "array", "maxItems": 200, "items": { "type": "string", "maxLength": 2000 } }
+  },
+  "properties": {
+    "kind": { "const": "session-capsule.handoff" },
+    "version": { "type": "string", "pattern": "^1\\.[0-9]+$" },
+    "handoffId": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+    "createdBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": { "name": { "type": "string", "maxLength": 100 }, "version": { "type": "string", "maxLength": 50 } }
+    },
+    "capturedAt": { "type": "string", "maxLength": 40 },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "surface", "platform", "toolVersion", "model"],
+      "properties": {
+        "tool": { "enum": ["codex", "claude-code", "manual"] },
+        "surface": { "enum": ["codex-desktop", "codex-cli", "claude-desktop-chat", "claude-desktop-cowork", "claude-code-desktop", "claude-code-cli", "claude-code-ide", "unknown"] },
+        "platform": { "type": "string", "maxLength": 40 },
+        "toolVersion": { "type": ["string", "null"], "maxLength": 100 },
+        "model": { "type": ["string", "null"], "maxLength": 200 }
+      }
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originalId", "originalRef", "sourceProjectPath", "firstRecordedAt", "lastRecordedAt"],
+      "properties": {
+        "originalId": { "type": ["string", "null"], "maxLength": 200 },
+        "originalRef": { "type": ["integer", "null"] },
+        "sourceProjectPath": { "type": ["string", "null"], "maxLength": 4096 },
+        "firstRecordedAt": { "type": ["string", "null"], "maxLength": 40 },
+        "lastRecordedAt": { "type": ["string", "null"], "maxLength": 40 }
+      }
+    },
+    "events": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["totalRecorded", "included", "omittedBefore", "lastIncludedSeq", "items"],
+      "properties": {
+        "totalRecorded": { "type": "integer", "minimum": 0 },
+        "included": { "type": "integer", "minimum": 0 },
+        "omittedBefore": { "type": "integer", "minimum": 0 },
+        "lastIncludedSeq": { "type": "integer", "minimum": 0 },
+        "items": { "type": "array", "maxItems": 5000, "items": { "type": "object" } }
+      }
+    },
+    "checkpoint": {
+      "type": ["object", "null"],
+      "required": ["observed", "agentNotes", "inferred", "missing"],
+      "properties": {
+        "observed": { "type": "object" },
+        "agentNotes": { "type": "object" },
+        "inferred": { "type": "object" },
+        "missing": { "$ref": "#/definitions/stringList" }
+      }
+    },
+    "sourceStatusAtCapture": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["historical", "observedAt", "note", "exportForced", "status"],
+      "properties": {
+        "historical": { "const": true },
+        "observedAt": { "type": "string", "maxLength": 40 },
+        "note": { "type": "string", "maxLength": 1000 },
+        "exportForced": { "type": "boolean" },
+        "status": { "type": "object" }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["history", "truncation", "missing"],
+      "properties": {
+        "history": { "type": "string", "maxLength": 1000 },
+        "truncation": { "$ref": "#/definitions/stringList" },
+        "missing": { "$ref": "#/definitions/stringList" }
+      }
+    },
+    "notes": { "type": ["string", "null"], "maxLength": 200000 },
+    "capsule": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["id", "formatVersion", "mode", "createdAt", "encrypted", "fingerprint", "files", "deletions"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[0-9a-f-]{36}$" },
+        "formatVersion": { "type": "string", "maxLength": 10 },
+        "mode": { "enum": ["full", "context-only"] },
+        "createdAt": { "type": "string", "maxLength": 40 },
+        "encrypted": { "type": "boolean" },
+        "fingerprint": { "$ref": "#/definitions/sha" },
+        "files": {
+          "type": "array",
+          "maxItems": 65000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["path", "sha256", "size", "status"],
+            "properties": {
+              "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+              "sha256": { "$ref": "#/definitions/sha" },
+              "size": { "type": "integer", "minimum": 0 },
+              "status": { "enum": ["unchanged", "modified", "added", "untracked", "unknown"] }
+            }
+          }
+        },
+        "deletions": { "type": "array", "maxItems": 65000, "items": { "type": "string", "maxLength": 1024 } }
+      }
+    }
+  }
+}

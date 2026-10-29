@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "session-capsule/v1/files",
+  "title": "Session Capsule file index (format 1.x)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["entries", "deletions", "excluded", "skipped", "platformIssues"],
+  "definitions": {
+    "relPath": { "type": "string", "minLength": 1, "maxLength": 1024 },
+    "sha": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "shaOrNull": { "type": ["string", "null"], "pattern": "^[0-9a-f]{64}$" }
+  },
+  "properties": {
+    "entries": {
+      "type": "array",
+      "maxItems": 65000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "sha256", "normSha256", "size", "executable", "status", "baseSha256", "baseNormSha256", "inPayload"],
+        "properties": {
+          "path": { "$ref": "#/definitions/relPath" },
+          "sha256": { "$ref": "#/definitions/sha" },
+          "normSha256": { "$ref": "#/definitions/shaOrNull" },
+          "size": { "type": "integer", "minimum": 0 },
+          "executable": { "type": "boolean" },
+          "status": { "enum": ["unchanged", "modified", "added", "untracked", "unknown"] },
+          "baseSha256": { "$ref": "#/definitions/shaOrNull" },
+          "baseNormSha256": { "$ref": "#/definitions/shaOrNull" },
+          "inPayload": { "type": "boolean" }
+        }
+      }
+    },
+    "deletions": {
+      "type": "array",
+      "maxItems": 65000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "baseSha256", "baseNormSha256"],
+        "properties": {
+          "path": { "$ref": "#/definitions/relPath" },
+          "baseSha256": { "$ref": "#/definitions/sha" },
+          "baseNormSha256": { "$ref": "#/definitions/shaOrNull" }
+        }
+      }
+    },
+    "excluded": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "rule"],
+        "properties": { "path": { "type": "string", "maxLength": 1024 }, "rule": { "type": "string", "maxLength": 200 } }
+      }
+    },
+    "skipped": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "reason"],
+        "properties": { "path": { "type": "string", "maxLength": 1024 }, "reason": { "type": "string", "maxLength": 200 } }
+      }
+    },
+    "platformIssues": {
+      "type": "array",
+      "maxItems": 100000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "platform", "kind", "blocking", "detail"],
+        "properties": {
+          "path": { "type": "string", "maxLength": 1024 },
+          "platform": { "enum": ["win32", "darwin", "linux"] },
+          "kind": { "enum": ["invalid-name", "reserved-name", "case-collision", "too-long", "existing-case-mismatch", "symlink-parent", "not-a-file"] },
+          "blocking": { "type": "boolean" },
+          "detail": { "type": "string", "maxLength": 500 }
+        }
+      }
+    }
+  }
+}

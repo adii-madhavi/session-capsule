@@ -1,0 +1,21 @@
+# Dependencies (dev-only: TypeScript for `npm run typecheck`)
+node_modules/
+
+# Capsules and handoff exports can contain conversation history and project files
+*.capsule
+*.capsule.partial-*
+*.handoff.json
+*.bundle
+
+# Handoff files written into a project on import
+.session-capsule/
+
+# Credentials and local environment
+.env
+.env.*
+!.env.example
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

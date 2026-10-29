@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "session-capsule/v1/environment",
+  "title": "Session Capsule environment notes (format 1.x)",
+  "description": "Informational only. Commands listed here are suggestions for the user to review; importers must never execute them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["source", "tools", "detected", "steps", "envVarNames", "excludedCredentials", "notes"],
+  "properties": {
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["platform", "arch"],
+      "properties": { "platform": { "type": "string", "maxLength": 40 }, "arch": { "type": "string", "maxLength": 40 } }
+    },
+    "tools": {
+      "type": "array",
+      "maxItems": 50,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "version", "note"],
+        "properties": {
+          "name": { "type": "string", "maxLength": 100 },
+          "version": { "type": ["string", "null"], "maxLength": 100 },
+          "note": { "type": ["string", "null"], "maxLength": 500 }
+        }
+      }
+    },
+    "detected": {
+      "type": "array",
+      "maxItems": 200,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "kind", "detail"],
+        "properties": {
+          "file": { "type": "string", "maxLength": 1024 },
+          "kind": { "type": "string", "maxLength": 100 },
+          "detail": { "type": "string", "maxLength": 500 }
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["title", "command", "note"],
+        "properties": {
+          "title": { "type": "string", "maxLength": 300 },
+          "command": { "type": ["string", "null"], "maxLength": 1000 },
+          "note": { "type": ["string", "null"], "maxLength": 1000 }
+        }
+      }
+    },
+    "envVarNames": { "type": "array", "maxItems": 500, "items": { "type": "string", "maxLength": 200 } },
+    "excludedCredentials": { "type": "array", "maxItems": 1000, "items": { "type": "string", "maxLength": 1024 } },
+    "notes": { "type": "array", "maxItems": 100, "items": { "type": "string", "maxLength": 1000 } }
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "$id": "session-capsule/v1/conversation",
+  "title": "Session Capsule conversation archive (format 1.x)",
+  "description": "Available history in a tool-neutral form. Every message carries source attribution. Text is untrusted and must be displayed as inert text.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["origin", "completeness", "notes", "messages"],
+  "properties": {
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool", "surface", "sessionId", "title", "toolVersion", "extractedFrom"],
+      "properties": {
+        "tool": { "enum": ["claude-code", "codex", "manual"] },
+        "surface": { "enum": ["desktop", "cli", "ide", "unknown"] },
+        "sessionId": { "type": ["string", "null"], "maxLength": 200 },
+        "title": { "type": ["string", "null"], "maxLength": 500 },
+        "toolVersion": { "type": ["string", "null"], "maxLength": 100 },
+        "extractedFrom": { "type": "string", "maxLength": 500 }
+      }
+    },
+    "completeness": { "enum": ["as-recorded", "possibly-partial", "user-supplied", "unavailable"] },
+    "notes": { "type": "array", "maxItems": 100, "items": { "type": "string", "maxLength": 1000 } },
+    "messages": {
+      "type": "array",
+      "maxItems": 200000,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["index", "role", "kind", "timestamp", "text", "toolName", "action", "truncated", "source"],
+        "properties": {
+          "index": { "type": "integer", "minimum": 0 },
+          "role": { "enum": ["user", "assistant", "tool", "note"] },
+          "kind": { "enum": ["text", "tool-call", "tool-result"] },
+          "timestamp": { "type": ["string", "null"], "maxLength": 40 },
+          "text": { "type": "string", "maxLength": 5000000 },
+          "toolName": { "type": ["string", "null"], "maxLength": 200 },
+          "action": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "required": ["type", "summary"],
+            "properties": {
+              "type": { "enum": ["command", "file-edit", "external", "other"] },
+              "summary": { "type": "string", "maxLength": 2000 }
+            }
+          },
+          "truncated": { "type": "boolean" },
+          "source": { "type": "string", "maxLength": 300 }
+        }
+      }
+    }
+  }
+}
