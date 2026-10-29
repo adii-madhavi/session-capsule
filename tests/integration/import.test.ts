@@ -140,7 +140,20 @@ test('Windows destination: invalid names and case collisions are blocked before 
   c.close();
 });
 
-test('existing case-only differences and symlinked folders at the destination are blocked', () => {
+// Windows refuses symlinks without Developer Mode or an admin shell (EPERM); skip only then.
+const canSymlink = (() => {
+  const probe = tmpDir('sc-symlink-probe');
+  fs.mkdirSync(path.join(probe, 'target'));
+  try {
+    fs.symlinkSync(path.join(probe, 'target'), path.join(probe, 'link'));
+    return true;
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'EPERM') return false;
+    throw err;
+  }
+})();
+
+test('existing case-only differences and symlinked folders at the destination are blocked', { skip: canSymlink ? false : 'symlinks need Developer Mode on Windows' }, () => {
   const dest = tmpDir('sc-dest');
   writeFiles(dest, { 'Docs/guide.md': 'mine\n' });
   fs.mkdirSync(path.join(dest, 'outside-target'));
