@@ -28,13 +28,16 @@ session receiving context**, not a restored one.
 
 | Surface | History into a capsule | Continue on the destination | Evidence |
 |---|---|---|---|
-| Codex desktop | Session Capsule `codex` adapter, or a Blocker handoff from its hooks | Manual paste | Adapter read real Codex Desktop 0.163 and 0.165 sessions on this Mac (counts only). Blocker hooks verified on Windows. |
+| Codex desktop | Session Capsule `codex` adapter, or a Blocker handoff from its hooks | Manual paste | Adapter read real Codex Desktop 0.163 and 0.165 sessions on macOS, and a 0.165 session on Windows 11 (counts only). Blocker hooks verified on Windows. |
 | Codex CLI | Same `codex` adapter (same store) | Manual paste | **Not verified**: no CLI session was available to read. |
-| Claude Desktop Chat / Cowork | No history capture | Blocker `continue.mjs --to cowork\|chat` (prefilled `claude://` link) and read-only MCP import tools | Links verified on Windows with Claude Desktop 3.6556 for same-computer takeover; not yet on macOS. |
+| Claude Desktop Chat / Cowork | No history capture | Blocker `continue.mjs --to cowork\|chat` (prefilled `claude://` link) and read-only MCP import tools | Links verified on Windows with Claude Desktop 3.6556 for same-computer takeover; the cowork route dry-ran for an imported capsule on Windows 11; not yet on macOS. |
 | Claude Code (desktop Code tab, CLI) | `claude-code` adapter | Manual paste | Adapter read a real desktop-tab session (Claude Code 2.1.309): 276 messages. CLI sessions use the same store, not separately verified. |
 
-Live MacBook ↔ PC transfers have not been run. Automated checks simulate both computers on one Mac
-and delete the source data before import.
+One live MacBook → PC transfer has been run (2026-10-29: macOS arm64 to Windows 11, Node 24.19).
+The PC read the context and continued the task; PC → MacBook hasn't been run. Automated checks
+simulate both computers on one machine and delete the source data before import. On Windows they
+pass, except that the symbolic-link test is skipped without Developer Mode or an administrator
+shell.
 
 ## Claude Code
 

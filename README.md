@@ -30,8 +30,12 @@ Node.js 22.18 or later on both computers. TypeScript runs directly and there are
 dependencies. `git` is optional but recommended.
 
 ```bash
+git clone https://github.com/adii-madhavi/session-capsule.git
+cd session-capsule
 node app/cli/main.ts help
 ```
+
+In the examples below, `capsule` is short for `node app/cli/main.ts`.
 
 ## Workflow
 
@@ -115,8 +119,9 @@ npm test
 npm run typecheck
 ```
 
-`npm test` runs 24 automated fixture tests. Live MacBook ↔ PC transfers haven't been run yet; see
-`docs/compatibility.md`.
+`npm test` runs 24 automated fixture tests. On Windows, the symbolic-link test is skipped unless
+Developer Mode is on or the shell runs as administrator. One live MacBook → PC transfer has been
+run; PC → MacBook hasn't. See `docs/compatibility.md`.
 
 ## Layout
 
@@ -130,3 +135,7 @@ npm run typecheck
 | `adapters` | `claude-code`, `codex`, `manual`, and `blocker` (handoff objects from desktop-continuity) |
 | `schemas/v1` | Normative JSON Schemas |
 | `docs` | `format.md`, `compatibility.md`, `blocker-integration.md` |
+
+## License
+
+MIT; see `LICENSE`.

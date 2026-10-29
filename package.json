@@ -4,7 +4,11 @@
   "description": "Move an unfinished coding-agent task between computers: conversation history, a continuation note and project files in one capsule.",
   "private": true,
   "type": "module",
-  "license": "UNLICENSED",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adii-madhavi/session-capsule.git"
+  },
   "engines": {
     "node": ">=22.18"
   },
