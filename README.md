@@ -17,8 +17,8 @@ context**, and every screen says so.
 ## Related project: Blocker
 
 [Blocker](https://github.com/adii-madhavi/codex-claude-continuity) (`desktop-continuity`) records Codex
-desktop sessions and serves them to Claude Desktop. Its integration with Session Capsule is on
-branch `feat/session-capsule-integration` (pull request #2).
+desktop sessions and serves them to Claude Desktop and Claude Code. Its integration with Session
+Capsule is on its `master` branch.
 
 - **Contract:** the two exchange a handoff object; see `docs/blocker-integration.md`.
 - **Layout:** Blocker's `npm run check-capsule` expects this repository next to it as
