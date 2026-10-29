@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "session-capsule",
+  "description": "Move an unfinished coding task between computers.",
+  "owner": {
+    "name": "adii-madhavi",
+    "url": "https://github.com/adii-madhavi"
+  },
+  "plugins": [
+    {
+      "name": "session-capsule",
+      "description": "Pack, preview and import a task capsule so a new session on another computer can continue the work.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}

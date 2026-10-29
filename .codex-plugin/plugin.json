@@ -1,0 +1,28 @@
+{
+  "name": "session-capsule",
+  "version": "0.1.0",
+  "description": "Move an unfinished coding task between computers: pack the conversation, a continuation note and project files into one verified capsule, then preview and import it on the other machine.",
+  "author": {
+    "name": "adii-madhavi",
+    "url": "https://github.com/adii-madhavi"
+  },
+  "homepage": "https://github.com/adii-madhavi/session-capsule",
+  "repository": "https://github.com/adii-madhavi/session-capsule",
+  "license": "MIT",
+  "keywords": ["handoff", "session", "transfer", "continuation", "cross-platform"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Session Capsule",
+    "shortDescription": "Move a task to another computer",
+    "longDescription": "Packs the conversation, a continuation note and project files into one verified capsule. On the other computer it previews, imports with conflict review and backups, and hands the context to a new session.",
+    "developerName": "adii-madhavi",
+    "category": "Productivity",
+    "capabilities": ["Instructions"],
+    "websiteURL": "https://github.com/adii-madhavi/session-capsule",
+    "defaultPrompt": [
+      "Pack this task so I can finish it on my other computer.",
+      "Preview importing this capsule into this project.",
+      "Continue the task from the capsule that was imported here."
+    ]
+  }
+}

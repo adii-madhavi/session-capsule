@@ -37,6 +37,24 @@ node app/cli/main.ts help
 
 In the examples below, `capsule` is short for `node app/cli/main.ts`.
 
+### As a plugin
+
+Session Capsule is also a Claude Code and a Codex plugin. The `session-capsule` skill runs the
+same CLI from the plugin folder, previews before every write, and leaves passphrases and
+conflict decisions to you.
+
+```bash
+claude plugin marketplace add adii-madhavi/session-capsule
+claude plugin install session-capsule@session-capsule
+```
+
+```bash
+codex plugin marketplace add adii-madhavi/session-capsule
+codex plugin add session-capsule@session-capsule
+```
+
+Then ask the agent to pack the task for another computer, or to import a capsule.
+
 ## Workflow
 
 **Source:** pause the agent, then:
@@ -135,6 +153,7 @@ run; PC → MacBook hasn't. See `docs/compatibility.md`.
 | `adapters` | `claude-code`, `codex`, `manual`, and `blocker` (handoff objects from desktop-continuity) |
 | `schemas/v1` | Normative JSON Schemas |
 | `docs` | `format.md`, `compatibility.md`, `blocker-integration.md` |
+| `skills`, `.claude-plugin`, `.codex-plugin`, `.agents` | Plugin skill and manifests for Claude Code and Codex |
 
 ## License
 
