@@ -32,10 +32,10 @@ test('Windows rules: invalid characters, reserved names, trailing dots, case col
 
 test('default exclusions: credentials, dependencies, build output; templates and user includes kept', () => {
   const r = { include: [], exclude: [] };
-  for (const p of ['.env', 'config/.env.local', 'certs/server.pem', 'id_ed25519', '.npmrc', 'node_modules/x/index.js', 'dist/app.js', '.git/HEAD', 'a/.DS_Store']) {
+  for (const p of ['.env', 'config/secrets.yaml', 'config/.env.local', 'certs/server.pem', 'id_ed25519', '.npmrc', 'node_modules/x/index.js', 'dist/app.js', '.git/HEAD', 'a/.DS_Store']) {
     assert.ok(classify(p, r), `should exclude ${p}`);
   }
-  for (const p of ['.env.example', 'id_ed25519.pub', 'src/build.ts', 'docs/README.md']) assert.equal(classify(p, r), null, p);
+  for (const p of ['.env.example', 'id_ed25519.pub', 'src/build.ts', 'docs/README.md', 'core/common/secrets.ts', 'lib/secrets.py']) assert.equal(classify(p, r), null, p);
   assert.equal(classify('dist/app.js', { ...r, tracked: () => true }), null, 'committed build output is kept in git projects');
   assert.equal(classify('.env', { include: ['.env'], exclude: [] }), null, 'the user can include a credential file on purpose');
   assert.ok(classify('.git/config', { include: ['**'], exclude: [] }), '.git is never included');

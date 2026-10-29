@@ -19,7 +19,9 @@ export const CREDENTIALS = [
   '.env', '.env.*', '*.pem', '*.key', '*.p12', '*.pfx', '*.jks', '*.keystore', '*.kdbx',
   'id_rsa*', 'id_dsa*', 'id_ecdsa*', 'id_ed25519*', '.npmrc', '.pypirc', '.netrc', '_netrc',
   '.git-credentials', 'credentials.json', 'auth.json', 'service-account*.json', '*.tfstate', '*.tfstate.*',
-  '.aws', '.ssh', '.gnupg', 'secrets.*',
+  '.aws', '.ssh', '.gnupg',
+  // Secret data files only; source files such as secrets.ts stay included.
+  'secrets.json', 'secrets.yaml', 'secrets.yml', 'secrets.toml', 'secrets.env', 'secrets.ini',
 ];
 
 // Templates and public keys look like credentials by name but are safe to move.
