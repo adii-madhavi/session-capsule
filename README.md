@@ -16,7 +16,7 @@ context**, and every screen says so.
 
 ## Related project: Blocker
 
-[Blocker](https://github.com/adii-madhavi/blocker) (`desktop-continuity`, private) records Codex
+[Blocker](https://github.com/adii-madhavi/blocker) (`desktop-continuity`) records Codex
 desktop sessions and serves them to Claude Desktop. Its integration with Session Capsule is on
 branch `feat/session-capsule-integration` (pull request #2).
 
